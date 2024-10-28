@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1615653051135-d95a5c3387b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar h1 {
+            color: #fff;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 218, 175, 0.8);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-container h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .result-container p {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark navbar-expand-lg">
+        <span class="navbar-text">
+            <h1>House Price Predictor</h1>
+        </span>
+    </nav>
+
+    <form action="{{ url_for('main') }}" method="POST" class="form-container">
+        <div class="form-group">
+            <label for="rooms">Rooms:</label>
+            <input name="rooms" id="rooms" type="number" class="form-control" required placeholder="Enter the number of rooms">
+        </div>
+
+        <div class="form-group">
+            <label for="bathroom">Bathroom:</label>
+            <input name="bathroom" id="bathroom" type="number" class="form-control" required placeholder="Enter the number of bathrooms">
+        </div>
+
+        <div class="form-group">
+            <label for="landsize">Landsize:</label>
+            <input name="landsize" id="landsize" type="number" class="form-control" required placeholder="Enter the land size">
+        </div>
+
+        <div class="form-group">
+            <label for="lattitude">Lattitude:</label>
+            <input name="lattitude" id="lattitude" type="number" class="form-control" required placeholder="Enter the lattitude">
+        </div>
+
+        <div class="form-group">
+            <label for="longtitude">Longtitude:</label>
+            <input name="longtitude" id="longtitude" type="number" class="form-control" required placeholder="Enter the longtitude">
+        </div>
+
+        <div class="form-group">
+            <label for="distance">Distance:</label>
+            <input name="distance" id="distance" type="number" class="form-control" required placeholder="Enter the distance">
+        </div>
+
+        <div class="form-group">
+            <label for="car">Car:</label>
+            <input name="car" id="car" type="number" class="form-control" required placeholder="Enter the number of cars">
+        </div>
+
+        <div class="form-group">
+            <label for="buildingarea">Building Area:</label>
+            <input name="buildingarea" id="buildingarea" type="number" class="form-control" required placeholder="Enter the building area">
+        </div>
+
+        <div class="form-group">
+            <label for="yearbuilt">YearBuilt:</label>
+            <input name="yearbuilt" id="yearbuilt" type="number" class="form-control" required placeholder="Enter the year built">
+        </div>
+
+        <!-- New form element for Propertycount -->
+        <div class="form-group">
+            <label for="propertycount">Propertycount:</label>
+            <input name="propertycount" id="propertycount" type="number" class="form-control" required placeholder="Enter the property count">
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </div>
+    </form>
+
+    <div class="result-container">
+        {% if result %}
+            {% for variable, value in original_input.items() %}
+                <b>{{ variable }}</b> : {{ value }}<br>
+            {% endfor %}
+            <h1>Predicted House Price:</h1>
+            <p>${{ result }}</p>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
